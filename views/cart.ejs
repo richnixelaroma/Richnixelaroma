@@ -3,56 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= product.name %> | <%= config.siteName %></title>
+    <title>Your cart | <%= config.siteName %></title>
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <%- include('partials/header') %>
-
     <main>
-      <section class="page-hero">
-        <div class="container">
-          <span class="kicker"><%= product.category %></span>
-          <h1><%= product.name %></h1>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container story-grid">
-          <div class="story-box">
-            <div class="product-image" style="height: 320px; border-radius: 22px; margin-bottom: 1rem;"></div>
-            <p><%= product.description %></p>
-            <div class="price-row" style="margin-top: 1rem;">
-              <span class="price">₹<%= Number(product.price).toLocaleString('en-IN') %></span>
-              <% if (product.discount) { %>
-                <span class="old-price">₹<%= ((product.price / (1 - product.discount / 100))).toFixed(0).toLocaleString('en-IN') %></span>
-              <% } %>
-            </div>
-            <div class="hero-actions">
-              <button class="btn btn-primary" data-add-to-cart data-product-id="<%= product.id %>" data-product-name="<%= product.name %>" data-product-price="<%= product.price %>" data-product-slug="<%= product.slug %>" data-product-image="<%= product.image %>">Add to cart</button>
-              <a href="/products" class="btn btn-secondary">Browse more</a>
-            </div>
-          </div>
-
-          <div class="info-box">
-            <span class="kicker">Fragrance notes</span>
-            <h3>Signature composition</h3>
-            <ul class="list">
-              <% (product.notes || []).forEach((note) => { %>
-                <li>• <%= note %></li>
-              <% }) %>
-            </ul>
-            <div class="feature-band">
-              <div class="feature-pill"><strong><%= product.stock %></strong><span>Stock</span></div>
-              <div class="feature-pill"><strong><%= product.rating || 4.8 %></strong><span>Rating</span></div>
-              <div class="feature-pill"><strong><%= product.discount %>%</strong><span>Offer</span></div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section class="page-hero"><div class="container"><span class="kicker">Shopping bag</span><h1>Your cart</h1><p>Review your selection and adjust quantities before checkout.</p></div></section>
+      <section class="section"><div class="container summary-box cart-page">
+        <div data-cart-items aria-live="polite"></div>
+        <div class="cart-totals"><div class="total-line"><span>Subtotal</span><strong data-cart-total>₹0</strong></div><p class="muted">Final pricing and coupon discounts are confirmed securely at checkout.</p></div>
+        <div class="cart-actions"><a href="/products" class="btn btn-secondary">Continue shopping</a><button type="button" class="btn btn-primary" data-checkout>Continue to checkout</button></div>
+      </div></section>
     </main>
-
     <%- include('partials/footer') %>
-    <script src="/js/app.js"></script>
+    <script type="module" src="/js/app.js"></script>
   </body>
 </html>

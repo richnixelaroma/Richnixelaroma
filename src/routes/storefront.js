@@ -1,6 +1,6 @@
 const express = require('express');
-const { getProducts, getOrders, getCoupons, getConfig } = require('../data/store');
-const { placeOrder } = require('../services/orderService');
+const { getProducts, getOrders, saveOrders, getCoupons, getConfig } = require('../data/store');
+const { placeOrder, quoteOrder } = require('../services/orderService');
 const { createRateLimiter } = require('../middleware/security');
 
 const router = express.Router();
@@ -22,22 +22,33 @@ router.get('/order-success', (req, res) => {
 });
 
 router.post('/api/cart/add', (req, res) => {
-  const { productId } = req.body || {};
-  const product = getProducts().find((item) => item.id === productId);
+  const product = getProducts().find((item) => String(item.id) === String((req.body || {}).productId));
   if (!product) return res.status(404).json({ success: false, message: 'Product not found.' });
   const cart = req.session.cart;
   const existing = cart.find((item) => item.id === product.id);
-  if (existing) existing.quantity = Math.min(20, existing.quantity + 1);
+  if (existing && existing.quantity >= Math.min(20, Number(product.stock) || 0)) {
+    return res.status(400).json({ success: false, message: 'The available stock limit has been reached.' });
+  }
+  if (existing) existing.quantity += 1;
   else cart.push({ id: product.id, quantity: 1 });
   res.json({ success: true, cartCount: cart.reduce((sum, item) => sum + item.quantity, 0) });
 });
 
-router.post('/api/order', orderLimiter, async (req, res, next) => {
+router.post('/api/coupon/validate', (req, res, next) => {
+  try {
+    const quote = quoteOrder(req.body || {}, { products: getProducts(), coupons: getCoupons() });
+    res.json({ success: true, subtotal: quote.subtotal, discount: quote.discount, total: quote.total, coupon: quote.coupon });
+  } catch (error) {
+    if (error.status) return res.status(error.status).json({ success: false, message: error.message });
+    next(error);
+  }
+});
+
+router.post('/api/order', orderLimiter, (req, res, next) => {
   try {
     const order = placeOrder(req.body || {}, { products: getProducts(), coupons: getCoupons(), siteConfig: getConfig() });
     const orders = getOrders();
     orders.unshift(order);
-    const { saveOrders } = require('../data/store');
     saveOrders(orders);
     req.session.cart = [];
     res.json({ success: true, order, message: 'Order placed successfully.' });

@@ -1,42 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Owner panel | <%= config.siteName %></title>
-    <link rel="stylesheet" href="/css/style.css" />
-  </head>
-  <body>
-    <%- include('partials/header') %>
-
-    <main>
-      <section class="section">
-        <div class="container" style="max-width: 560px;">
-          <div class="form-area">
-            <h3>Owner panel login</h3>
-            <% if (error) { %>
-              <p style="color: var(--error); margin-bottom: 1rem;"><%= error %></p>
-            <% } %>
-            <form method="POST" action="/admin/login">
-              <div class="form-grid">
-                <label style="grid-column: 1 / -1;">
-                  <span>Username</span>
-                  <input class="input" type="text" name="username" required />
-                </label>
-                <label style="grid-column: 1 / -1;">
-                  <span>Password</span>
-                  <input class="input" type="password" name="password" required />
-                </label>
-              </div>
-              <div style="margin-top: 1rem;">
-                <button class="btn btn-primary" type="submit">Enter dashboard</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <%- include('partials/footer') %>
-  </body>
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Owner dashboard | <%= config.siteName %></title><link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="admin-page">
+  <%- include('partials/header') %>
+  <main class="admin-shell container">
+    <header class="admin-heading"><div><span class="kicker">Owner workspace</span><h1>Dashboard</h1><p class="muted">Signed in as <strong><%= adminUser %></strong>. Manage orders, products, offers, and store settings.</p></div><form method="post" action="/admin/logout"><button class="btn btn-secondary" type="submit">Sign out</button></form></header>
+    <div class="admin-stats"><article class="admin-stat"><span>Orders</span><strong><%= orders.length %></strong></article><article class="admin-stat"><span>Products</span><strong><%= products.length %></strong></article><article class="admin-stat"><span>Active coupons</span><strong><%= coupons.filter((coupon) => coupon.active).length %></strong></article></div>
+    <nav class="admin-tabs" role="tablist" aria-label="Dashboard sections">
+      <button type="button" role="tab" data-admin-tab="overview">Overview</button><button type="button" role="tab" data-admin-tab="orders">Orders</button><button type="button" role="tab" data-admin-tab="products">Products</button><button type="button" role="tab" data-admin-tab="coupons">Coupons</button><button type="button" role="tab" data-admin-tab="settings">Settings</button>
+    </nav>
+    <section data-admin-panel="overview" class="admin-panel"><h2>Recent orders</h2><% if (!orders.length) { %><p class="empty-state">No orders yet. New customer orders will appear here.</p><% } else { %><ul class="order-list"><% orders.slice(0, 5).forEach((order) => { %><li><div class="order-header"><strong><%= order.id %></strong><span><%= order.status %></span></div><p><%= order.customer.name %> · <%= order.items.length %> item(s) · ₹<%= Number(order.total).toLocaleString('en-IN') %></p><a href="/admin?section=orders">Manage order</a></li><% }) %></ul><% } %></section>
+    <section data-admin-panel="orders" class="admin-panel" hidden><h2>Order management</h2><% if (!orders.length) { %><p class="empty-state">No orders to manage.</p><% } else { %><div class="admin-record-list"><% orders.forEach((order) => { %><article class="admin-record"><div class="order-header"><div><strong><%= order.id %></strong><span class="muted"> · <%= new Date(order.createdAt).toLocaleString('en-IN') %></span></div><strong>₹<%= Number(order.total).toLocaleString('en-IN') %></strong></div><p><%= order.customer.name %> · <%= order.customer.phone %> · <%= order.customer.city %>, <%= order.customer.state %></p><p><%= order.items.map((item) => `${item.name} × ${item.quantity}`).join(', ') %></p><form method="post" action="/admin/orders/<%= encodeURIComponent(order.id) %>/status" class="inline-form"><label><span>Status</span><select name="status" class="select"><% orderStatuses.forEach((status) => { %><option value="<%= status %>" <%= status === order.status ? 'selected' : '' %>><%= status %></option><% }) %></select></label><button class="btn btn-secondary" type="submit">Update status</button></form></article><% }) %></div><% } %></section>
+    <section data-admin-panel="products" class="admin-panel" hidden><h2>Catalog</h2><details class="admin-details"><summary>Add a product</summary><form method="post" action="/admin/products" class="form-grid admin-form"><label><span>Name *</span><input class="input" name="name" maxlength="120" required /></label><label><span>Slug</span><input class="input" name="slug" maxlength="120" placeholder="Generated from name" /></label><label><span>Category</span><input class="input" name="category" value="Perfume" maxlength="50" /></label><label><span>Price (₹) *</span><input class="input" type="number" name="price" min="0.01" step="0.01" required /></label><label><span>Stock *</span><input class="input" type="number" name="stock" min="0" step="1" required /></label><label><span>Discount (%)</span><input class="input" type="number" name="discount" min="0" max="100" value="0" /></label><label><span>Rating</span><input class="input" type="number" name="rating" min="0" max="5" step="0.1" value="4.8" /></label><label><span>Image URL</span><input class="input" name="image" maxlength="300" /></label><label class="full-width"><span>Description</span><textarea class="textarea" name="description" maxlength="1000"></textarea></label><label class="full-width"><span>Notes (comma separated)</span><input class="input" name="notes" maxlength="500" /></label><label class="checkbox-label"><input type="checkbox" name="featured" /> Featured on home page</label><div class="full-width"><button class="btn btn-primary">Create product</button></div></form></details>
+      <% products.forEach((product) => { %><details class="admin-details"><summary><%= product.name %> · ₹<%= Number(product.price).toLocaleString('en-IN') %> · stock <%= product.stock %></summary><form method="post" action="/admin/products/<%= encodeURIComponent(product.id) %>" class="form-grid admin-form"><label><span>Name *</span><input class="input" name="name" value="<%= product.name %>" maxlength="120" required /></label><label><span>Slug *</span><input class="input" name="slug" value="<%= product.slug %>" maxlength="120" required /></label><label><span>Category</span><input class="input" name="category" value="<%= product.category %>" maxlength="50" /></label><label><span>Price (₹) *</span><input class="input" type="number" name="price" value="<%= product.price %>" min="0.01" step="0.01" required /></label><label><span>Stock *</span><input class="input" type="number" name="stock" value="<%= product.stock %>" min="0" step="1" required /></label><label><span>Discount (%)</span><input class="input" type="number" name="discount" value="<%= product.discount || 0 %>" min="0" max="100" /></label><label><span>Image URL</span><input class="input" name="image" value="<%= product.image || '' %>" maxlength="300" /></label><label class="full-width"><span>Description</span><textarea class="textarea" name="description" maxlength="1000"><%= product.description || '' %></textarea></label><label class="full-width"><span>Notes (comma separated)</span><input class="input" name="notes" value="<%= (product.notes || []).join(', ') %>" maxlength="500" /></label><label class="checkbox-label"><input type="checkbox" name="featured" <%= product.featured ? 'checked' : '' %> /> Featured</label><div class="full-width form-actions"><button class="btn btn-primary">Save changes</button></div></form><form method="post" action="/admin/products/<%= encodeURIComponent(product.id) %>/delete" data-confirm="Delete this product? Past order records will remain unchanged." class="delete-form"><button class="link-button danger-text">Delete product</button></form></details><% }) %>
+    </section>
+    <section data-admin-panel="coupons" class="admin-panel" hidden><h2>Discount coupons</h2><form method="post" action="/admin/coupons" class="form-grid admin-form"><label><span>Code *</span><input class="input" name="code" maxlength="40" pattern="[A-Za-z0-9_-]{2,40}" required /></label><label><span>Type</span><select class="select" name="type"><option value="percent">Percentage</option><option value="fixed">Fixed amount (₹)</option></select></label><label><span>Value *</span><input class="input" type="number" name="value" min="0.01" step="0.01" max="100" required /></label><div class="form-actions"><button class="btn btn-primary">Create coupon</button></div></form><div class="admin-record-list"><% coupons.forEach((coupon) => { %><article class="admin-record order-header"><div><strong><%= coupon.code %></strong><span class="muted"> · <%= coupon.type === 'percent' ? `${coupon.value}%` : `₹${coupon.value}` %> · <%= coupon.active ? 'Active' : 'Inactive' %></span></div><div class="action-row"><form method="post" action="/admin/coupons/<%= encodeURIComponent(coupon.code) %>/toggle"><button class="btn btn-secondary"><%= coupon.active ? 'Deactivate' : 'Activate' %></button></form><form method="post" action="/admin/coupons/<%= encodeURIComponent(coupon.code) %>/delete" data-confirm="Delete this coupon?"><button class="link-button danger-text">Delete</button></form></div></article><% }) %></div></section>
+    <section data-admin-panel="settings" class="admin-panel" hidden><h2>Store settings</h2><form method="post" action="/admin/site-config" class="form-grid admin-form"><label><span>Store name</span><input class="input" name="siteName" value="<%= config.siteName %>" maxlength="100" required /></label><label><span>Support phone</span><input class="input" name="supportPhone" value="<%= config.supportPhone %>" maxlength="30" /></label><label class="full-width"><span>UPI ID (leave blank to disable UPI)</span><input class="input" name="upiId" value="<%= config.upiId %>" maxlength="100" /></label><label class="full-width"><span>Tagline</span><textarea class="textarea" name="tagline" maxlength="240"><%= config.tagline %></textarea></label><label class="checkbox-label"><input type="checkbox" name="codEnabled" <%= config.codEnabled ? 'checked' : '' %> /> Enable cash on delivery</label><label class="checkbox-label"><input type="checkbox" name="gujaratOnly" <%= config.gujaratOnly ? 'checked' : '' %> /> Deliver only within Gujarat</label><div class="full-width"><button class="btn btn-primary">Save settings</button></div></form></section>
+  </main>
+  <%- include('partials/footer') %>
+  <script type="module" src="/js/app.js"></script>
+</body>
 </html>

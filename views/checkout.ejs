@@ -3,42 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Your Cart | <%= config.siteName %></title>
+    <title>Checkout | <%= config.siteName %></title>
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <%- include('partials/header') %>
-
     <main>
-      <section class="page-hero">
-        <div class="container">
-          <span class="kicker">Shopping cart</span>
-          <h1>Your selection</h1>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container summary-box" style="max-width: 920px;">
-          <div data-cart-items></div>
-          <div class="cart-totals">
-            <div class="total-line">
-              <span>Subtotal</span>
-              <strong data-cart-total>₹0</strong>
-            </div>
+      <section class="page-hero"><div class="container"><span class="kicker">Secure checkout</span><h1>Delivery details</h1><p>Complete your delivery details and choose your payment method.</p></div></section>
+      <section class="section"><div class="container checkout-layout">
+        <form id="checkoutForm" class="form-area" novalidate>
+          <h2>Customer information</h2>
+          <p class="muted">Fields marked * are required.</p>
+          <div class="form-grid">
+            <label><span>Full name *</span><input class="input" name="name" autocomplete="name" minlength="2" maxlength="100" pattern="[A-Za-zÀ-ž .'-]+" required /></label>
+            <label><span>Phone number *</span><input class="input" type="tel" name="phone" autocomplete="tel" inputmode="tel" pattern="[+]?[0-9 ()-]{10,18}" maxlength="18" required /></label>
+            <label><span>Email (optional)</span><input class="input" type="email" name="email" autocomplete="email" maxlength="254" /></label>
+            <label><span>City *</span><input class="input" name="city" autocomplete="address-level2" maxlength="100" required /></label>
+            <label class="full-width"><span>Delivery address *</span><textarea class="textarea" name="address" autocomplete="street-address" minlength="5" maxlength="500" rows="3" required></textarea></label>
+            <label><span>State *</span><input class="input" name="state" autocomplete="address-level1" value="Gujarat" maxlength="100" required /></label>
+            <label><span>PIN code *</span><input class="input" name="pincode" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" required /></label>
           </div>
-          <div style="margin-top: 1rem; display: flex; justify-content: flex-end;">
-            <button class="btn btn-primary" data-checkout>Proceed to checkout</button>
-          </div>
-        </div>
-      </section>
+          <fieldset class="payment-options"><legend>Payment method *</legend>
+            <% if (config.codEnabled) { %><label class="payment-option"><input type="radio" name="paymentMethod" value="cod" checked required /><span><strong>Cash on delivery</strong><small>Pay when your order arrives.</small></span></label><% } %>
+            <% if (config.upiId) { %><label class="payment-option"><input type="radio" name="paymentMethod" value="upi" <%= config.codEnabled ? '' : 'checked' %> required /><span><strong>UPI</strong><small>Continue to your UPI app after placing the order.</small></span></label><% } %>
+            <% if (!config.codEnabled && !config.upiId) { %><p class="error-text">Checkout is temporarily unavailable. Please contact support.</p><% } %>
+          </fieldset>
+          <div class="coupon-entry"><label for="couponCode">Discount code (optional)</label><div class="coupon-controls"><input class="input" id="couponCode" name="coupon" maxlength="40" autocomplete="off" placeholder="Enter a code" /><button class="btn btn-secondary" type="button" data-apply-coupon>Apply</button></div></div>
+          <p class="form-message" data-checkout-message role="status" aria-live="polite"></p>
+          <button class="btn btn-primary checkout-submit" type="submit" <%= (!config.codEnabled && !config.upiId) ? 'disabled' : '' %>>Place order</button>
+        </form>
+        <aside class="summary-box order-summary"><h2>Order summary</h2><div data-order-summary></div><div class="cart-totals"><div class="total-line"><span>Subtotal</span><strong data-checkout-subtotal>₹0</strong></div><div class="total-line"><span>Discount</span><strong data-checkout-discount>₹0</strong></div><div class="total-line grand-total"><span>Total</span><strong data-checkout-total>₹0</strong></div></div><p class="muted">Prices are confirmed from the product catalog when you place the order.</p></aside>
+      </div></section>
     </main>
-
     <%- include('partials/footer') %>
-    <script src="/js/app.js"></script>
-    <script>
-      document.querySelector('[data-checkout]').addEventListener('click', () => {
-        window.location.href = '/checkout';
-      });
-    </script>
+    <script type="module" src="/js/app.js"></script>
   </body>
 </html>
