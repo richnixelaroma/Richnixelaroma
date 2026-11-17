@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin login | <%= config.siteName %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main>
+      <section class="section">
+        <div class="container" style="max-width: 560px;">
+          <div class="form-area">
+            <h3>Owner panel login</h3>
+            <% if (error) { %>
+              <p style="color: #f9dede; margin-bottom: 1rem;"><%= error %></p>
+            <% } %>
+            <form method="POST" action="/admin/login">
+              <div class="form-grid">
+                <label style="grid-column: 1 / -1;">
+                  <span>Username</span>
+                  <input class="input" type="text" name="username" required />
+                </label>
+                <label style="grid-column: 1 / -1;">
+                  <span>Password</span>
+                  <input class="input" type="password" name="password" required />
+                </label>
+              </div>
+              <div style="margin-top: 1rem;">
+                <button class="btn btn-primary" type="submit">Enter dashboard</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>

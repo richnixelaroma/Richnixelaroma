@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Support | <%= config.siteName %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <span class="kicker">Customer care</span>
+          <h1>We’re here to help</h1>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container support-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
+          <div class="mini-card">
+            <h3>Speak with our team</h3>
+            <p>Need order help, fragrance advice, or support? Reach out directly.</p>
+            <div class="status-pill">Available daily</div>
+            <p style="margin-top: 1rem; font-size: 1.25rem; font-weight: 700; color: var(--gold);"><%= config.supportPhone %></p>
+            <div class="hero-actions" style="margin-top: 1rem;">
+              <a href="tel:+919099401987" class="btn btn-primary">Call now</a>
+              <a href="mailto:support@richnixelaroma.com" class="btn btn-secondary">Email us</a>
+            </div>
+          </div>
+
+          <div class="mini-card">
+            <h3>Support policies</h3>
+            <ul class="list">
+              <li>• Orders accepted only within Gujarat</li>
+              <li>• UPI redirect is handled to Creationlofi777@oksbi</li>
+              <li>• COD is available for eligible Gujarat addresses</li>
+              <li>• Order assistance within 24 hours</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>

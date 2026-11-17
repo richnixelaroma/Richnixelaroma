@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Owner panel | <%= config.siteName %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main class="admin-shell">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="kicker">Owner dashboard</span>
+            <h2>Welcome, <%= adminUser %></h2>
+          </div>
+          <a href="/admin/logout" class="btn btn-secondary">Logout</a>
+        </div>
+
+        <div class="admin-grid">
+          <section class="admin-panel">
+            <h3>Site settings</h3>
+            <form method="POST" action="/admin/site-config">
+              <div class="form-grid">
+                <label>
+                  <span>Store name</span>
+                  <input class="input" type="text" name="siteName" value="<%= config.siteName %>" />
+                </label>
+                <label>
+                  <span>Support phone</span>
+                  <input class="input" type="text" name="supportPhone" value="<%= config.supportPhone %>" />
+                </label>
+                <label style="grid-column: 1 / -1;">
+                  <span>UPI ID</span>
+                  <input class="input" type="text" name="upiId" value="<%= config.upiId %>" />
+                </label>
+                <label>
+                  <span>COD enabled</span>
+                  <input type="checkbox" name="codEnabled" <%= config.codEnabled ? 'checked' : '' %> />
+                </label>
+                <label>
+                  <span>Gujarat only</span>
+                  <input type="checkbox" name="gujaratOnly" <%= config.gujaratOnly ? 'checked' : '' %> />
+                </label>
+              </div>
+              <div style="margin-top: 1rem;">
+                <button class="btn btn-primary" type="submit">Save settings</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="admin-panel">
+            <h3>Add product</h3>
+            <form method="POST" action="/admin/products">
+              <div class="form-grid">
+                <label>
+                  <span>Name</span>
+                  <input class="input" type="text" name="name" required />
+                </label>
+                <label>
+                  <span>Slug</span>
+                  <input class="input" type="text" name="slug" />
+                </label>
+                <label>
+                  <span>Category</span>
+                  <select class="select" name="category">
+                    <option>Perfume</option>
+                    <option>Attar</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Price</span>
+                  <input class="input" type="number" name="price" required />
+                </label>
+                <label>
+                  <span>Discount %</span>
+                  <input class="input" type="number" name="discount" value="0" />
+                </label>
+                <label>
+                  <span>Stock</span>
+                  <input class="input" type="number" name="stock" value="10" />
+                </label>
+                <label style="grid-column: 1 / -1;">
+                  <span>Image</span>
+                  <input class="input" type="text" name="image" value="/images/default.jpg" />
+                </label>
+                <label style="grid-column: 1 / -1;">
+                  <span>Description</span>
+                  <textarea class="textarea" name="description" rows="3"></textarea>
+                </label>
+                <label style="grid-column: 1 / -1;">
+                  <span>Notes (comma-separated)</span>
+                  <input class="input" type="text" name="notes" value="Saffron, Oud, Vanilla" />
+                </label>
+                <label>
+                  <span>Featured</span>
+                  <input type="checkbox" name="featured" />
+                </label>
+              </div>
+              <div style="margin-top: 1rem;">
+                <button class="btn btn-primary" type="submit">Add product</button>
+              </div>
+            </form>
+          </section>
+        </div>
+
+        <div class="admin-grid" style="margin-top: 1.5rem;">
+          <section class="admin-panel">
+            <h3>Coupons</h3>
+            <form method="POST" action="/admin/coupons">
+              <div class="form-grid">
+                <label>
+                  <span>Code</span>
+                  <input class="input" type="text" name="code" required />
+                </label>
+                <label>
+                  <span>Type</span>
+                  <select class="select" name="type">
+                    <option value="percent">Percent</option>
+                    <option value="fixed">Fixed</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Value</span>
+                  <input class="input" type="number" name="value" required />
+                </label>
+              </div>
+              <div style="margin-top: 1rem;">
+                <button class="btn btn-primary" type="submit">Add coupon</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="admin-panel">
+            <h3>Products</h3>
+            <% products.forEach((product) => { %>
+              <form method="POST" action="/admin/products/<%= product.id %>" style="margin-bottom: 1rem; border-top: 1px solid var(--line); padding-top: 1rem;">
+                <div class="form-grid">
+                  <label>
+                    <span>Name</span>
+                    <input class="input" type="text" name="name" value="<%= product.name %>" />
+                  </label>
+                  <label>
+                    <span>Price</span>
+                    <input class="input" type="number" name="price" value="<%= product.price %>" />
+                  </label>
+                  <label>
+                    <span>Discount</span>
+                    <input class="input" type="number" name="discount" value="<%= product.discount %>" />
+                  </label>
+                  <label>
+                    <span>Stock</span>
+                    <input class="input" type="number" name="stock" value="<%= product.stock %>" />
+                  </label>
+                  <label style="grid-column: 1 / -1;">
+                    <span>Notes</span>
+                    <input class="input" type="text" name="notes" value="<%= product.notes.join(', ') %>" />
+                  </label>
+                  <label>
+                    <span>Featured</span>
+                    <input type="checkbox" name="featured" <%= product.featured ? 'checked' : '' %> />
+                  </label>
+                </div>
+                <div style="margin-top: 0.7rem;">
+                  <button class="btn btn-secondary" type="submit">Update product</button>
+                </div>
+              </form>
+            <% }) %>
+          </section>
+        </div>
+
+        <section class="admin-panel" style="margin-top:1.5rem;">
+          <h3>Orders</h3>
+          <ul class="order-list">
+            <% orders.forEach((order) => { %>
+              <li>
+                <div class="order-header">
+                  <strong><%= order.id %></strong>
+                  <span><%= order.customer.name %></span>
+                </div>
+                <div style="color: var(--muted);">
+                  <div>₹<%= Number(order.total).toLocaleString('en-IN') %> • <%= order.paymentMethod.toUpperCase() %></div>
+                  <div><%= order.customer.city %>, <%= order.customer.state %></div>
+                </div>
+                <form method="POST" action="/admin/orders/<%= order.id %>/status" style="margin-top: 0.7rem;">
+                  <select class="select" name="status">
+                    <option <%= order.status === 'Awaiting UPI confirmation' ? 'selected' : '' %>>Awaiting UPI confirmation</option>
+                    <option <%= order.status === 'Order placed - COD' ? 'selected' : '' %>>Order placed - COD</option>
+                    <option <%= order.status === 'Packed' ? 'selected' : '' %>>Packed</option>
+                    <option <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                    <option <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                  </select>
+                  <button class="btn btn-secondary" style="margin-top: 0.6rem;" type="submit">Update</button>
+                </form>
+              </li>
+            <% }) %>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>

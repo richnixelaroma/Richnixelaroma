@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= config.siteName %> | Premium Perfumes and Attars</title>
+    <meta name="description" content="Luxury perfume and attar store with premium fragrances, oud, rose, musk, premium gifting and customer support." />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="kicker">Luxury fragrance house</span>
+            <h1>Signature perfumery, tailor-made for a rich, unforgettable aura.</h1>
+            <p><%= config.tagline %> Discover authentic perfume and attar blends that exude elegance, depth, and presence.</p>
+            <div class="hero-actions">
+              <a href="/products" class="btn btn-primary">Shop collection</a>
+              <a href="/support" class="btn btn-secondary">Customer support</a>
+            </div>
+            <div class="trust-row">
+              <span>100% authentic</span>
+              <span>Gujarat delivery</span>
+              <span>Premium gifting</span>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="bottle-card" aria-hidden="true">
+              <div class="pill pill-top">Signature</div>
+              <div class="pill pill-bottom">Notes</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="kicker">Featured collection</span>
+              <h2>Best sellers</h2>
+            </div>
+            <p>Luxury blends designed for memorable gifting, refined style, and long-lasting scent experiences.</p>
+          </div>
+
+          <div class="products-grid">
+            <% products.forEach((product) => { %>
+              <article class="product-card">
+                <div class="product-image" aria-label="<%= product.name %>"></div>
+                <div class="product-body">
+                  <div class="product-meta">
+                    <span><%= product.category %></span>
+                    <span><%= product.rating %> ★</span>
+                  </div>
+                  <h3><a href="/products/<%= product.slug %>"><%= product.name %></a></h3>
+                  <p><%= product.description %></p>
+                  <div class="product-footer">
+                    <div class="price-row">
+                      <span class="price">₹<%= product.price.toLocaleString('en-IN') %></span>
+                      <% if (product.discount) { %>
+                        <span class="old-price">₹<%= ((product.price / (1 - product.discount / 100))).toFixed(0).toLocaleString('en-IN') %></span>
+                      <% } %>
+                    </div>
+                    <button class="add-btn" data-add-to-cart data-product-id="<%= product.id %>" data-product-name="<%= product.name %>" data-product-price="<%= product.price %>" data-product-slug="<%= product.slug %>" data-product-image="<%= product.image %>">Add to cart</button>
+                  </div>
+                </div>
+              </article>
+            <% }) %>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="story-grid">
+            <div class="story-box">
+              <span class="kicker">Our heritage</span>
+              <h3>Crafted for people who love a luxurious signature trail.</h3>
+              <p>Each Richnix creation is blended with intense fragrance notes, elegant depth, and a polished finish that lingers beautifully throughout the day.</p>
+              <ul class="list">
+                <li>• Premium perfume oils and attars</li>
+                <li>• Signature luxury notes with warm undertones</li>
+                <li>• Refined packaging for gifting and daily wear</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <span class="kicker">Why choose us</span>
+              <h3>Luxury without compromise.</h3>
+              <div class="feature-band">
+                <div class="feature-pill"><strong>24h</strong><span>long-lasting</span></div>
+                <div class="feature-pill"><strong>100%</strong><span>authentic</span></div>
+                <div class="feature-pill"><strong>GJ</strong><span>delivery</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <span class="kicker">Customer love</span>
+              <h2>Loved by fragrance connoisseurs</h2>
+            </div>
+          </div>
+          <div class="testimonials">
+            <article class="quote">
+              <p>“The fragrance feels premium, rich, and beautifully balanced. It lasts all day with a refined trail.”</p>
+              <strong>— Aisha, Ahmedabad</strong>
+            </article>
+            <article class="quote">
+              <p>“The attar quality is excellent. It feels sophisticated without being too overpowering.”</p>
+              <strong>— Neel, Surat</strong>
+            </article>
+            <article class="quote">
+              <p>“It looks luxurious and the scent is unforgettable—perfect for gifting or personal wear.”</p>
+              <strong>— Priya, Vadodara</strong>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="newsletter">
+            <div>
+              <span class="kicker">Exclusive updates</span>
+              <h3>Get news about launches and seasonal offers.</h3>
+            </div>
+            <div class="newsletter-form">
+              <input type="email" class="input inline-input" placeholder="Email address" />
+              <button class="btn btn-primary">Join now</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

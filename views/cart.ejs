@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= product.name %> | <%= config.siteName %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <span class="kicker"><%= product.category %></span>
+          <h1><%= product.name %></h1>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container story-grid">
+          <div class="story-box">
+            <div class="product-image" style="height: 300px; border-radius: 20px; margin-bottom: 1rem;"></div>
+            <p><%= product.description %></p>
+            <div class="price-row" style="margin-top: 1rem;">
+              <span class="price">₹<%= product.price.toLocaleString('en-IN') %></span>
+              <% if (product.discount) { %>
+                <span class="old-price">₹<%= ((product.price / (1 - product.discount / 100))).toFixed(0).toLocaleString('en-IN') %></span>
+              <% } %>
+            </div>
+            <div class="hero-actions" style="margin-top: 1.2rem;">
+              <button class="btn btn-primary" data-add-to-cart data-product-id="<%= product.id %>" data-product-name="<%= product.name %>" data-product-price="<%= product.price %>" data-product-slug="<%= product.slug %>" data-product-image="<%= product.image %>">Add to cart</button>
+              <a href="/products" class="btn btn-secondary">Browse more</a>
+            </div>
+          </div>
+
+          <div class="info-box">
+            <span class="kicker">Fragrance notes</span>
+            <h3>Signature composition</h3>
+            <ul class="list">
+              <% product.notes.forEach((note) => { %>
+                <li>• <%= note %></li>
+              <% }) %>
+            </ul>
+            <div class="feature-band">
+              <div class="feature-pill"><strong><%= product.stock %></strong><span>Stock</span></div>
+              <div class="feature-pill"><strong><%= product.rating %></strong><span>Rating</span></div>
+              <div class="feature-pill"><strong><%= product.discount %>%</strong><span>Offer</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

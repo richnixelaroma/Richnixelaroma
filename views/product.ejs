@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products | <%= config.siteName %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <span class="kicker">Collection</span>
+          <h1>Perfumes & Attars</h1>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="products-grid">
+            <% products.forEach((product) => { %>
+              <article class="product-card">
+                <div class="product-image"></div>
+                <div class="product-body">
+                  <div class="product-meta">
+                    <span><%= product.category %></span>
+                    <span><%= product.rating %> ★</span>
+                  </div>
+                  <h3><a href="/products/<%= product.slug %>"><%= product.name %></a></h3>
+                  <p><%= product.description %></p>
+                  <div class="product-footer">
+                    <div class="price-row">
+                      <span class="price">₹<%= product.price.toLocaleString('en-IN') %></span>
+                      <% if (product.discount) { %>
+                        <span class="old-price">₹<%= ((product.price / (1 - product.discount / 100))).toFixed(0).toLocaleString('en-IN') %></span>
+                      <% } %>
+                    </div>
+                    <button class="add-btn" data-add-to-cart data-product-id="<%= product.id %>" data-product-name="<%= product.name %>" data-product-price="<%= product.price %>" data-product-slug="<%= product.slug %>" data-product-image="<%= product.image %>">Add to cart</button>
+                  </div>
+                </div>
+              </article>
+            <% }) %>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

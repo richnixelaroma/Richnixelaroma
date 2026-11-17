@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order placed | <%= config.siteName %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main>
+      <section class="section">
+        <div class="container" style="max-width: 760px;">
+          <div class="story-box">
+            <span class="kicker">Order confirmation</span>
+            <h3>Thank you for your order.</h3>
+            <% if (order) { %>
+              <p>Your order <strong><%= order.id %></strong> has been placed successfully.</p>
+              <p>Payment method: <strong><%= order.paymentMethod.toUpperCase() %></strong></p>
+              <p>Status: <strong><%= order.status %></strong></p>
+            <% else { %>
+              <p>Your order has been placed successfully and is being processed.</p>
+            <% } %>
+            <div class="hero-actions" style="margin-top: 1rem;">
+              <a href="/products" class="btn btn-primary">Continue shopping</a>
+              <a href="/support" class="btn btn-secondary">Need help?</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>
