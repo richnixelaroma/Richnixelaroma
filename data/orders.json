@@ -1,0 +1,5 @@
+[
+  { "code": "RICH10", "type": "percent", "value": 10, "active": true },
+  { "code": "ATTAR20", "type": "percent", "value": 20, "active": true },
+  { "code": "WELCOME15", "type": "percent", "value": 15, "active": true }
+]

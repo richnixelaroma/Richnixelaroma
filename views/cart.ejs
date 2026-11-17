@@ -20,15 +20,15 @@
       <section class="section">
         <div class="container story-grid">
           <div class="story-box">
-            <div class="product-image" style="height: 300px; border-radius: 20px; margin-bottom: 1rem;"></div>
+            <div class="product-image" style="height: 320px; border-radius: 22px; margin-bottom: 1rem;"></div>
             <p><%= product.description %></p>
             <div class="price-row" style="margin-top: 1rem;">
-              <span class="price">₹<%= product.price.toLocaleString('en-IN') %></span>
+              <span class="price">₹<%= Number(product.price).toLocaleString('en-IN') %></span>
               <% if (product.discount) { %>
                 <span class="old-price">₹<%= ((product.price / (1 - product.discount / 100))).toFixed(0).toLocaleString('en-IN') %></span>
               <% } %>
             </div>
-            <div class="hero-actions" style="margin-top: 1.2rem;">
+            <div class="hero-actions">
               <button class="btn btn-primary" data-add-to-cart data-product-id="<%= product.id %>" data-product-name="<%= product.name %>" data-product-price="<%= product.price %>" data-product-slug="<%= product.slug %>" data-product-image="<%= product.image %>">Add to cart</button>
               <a href="/products" class="btn btn-secondary">Browse more</a>
             </div>
@@ -38,13 +38,13 @@
             <span class="kicker">Fragrance notes</span>
             <h3>Signature composition</h3>
             <ul class="list">
-              <% product.notes.forEach((note) => { %>
+              <% (product.notes || []).forEach((note) => { %>
                 <li>• <%= note %></li>
               <% }) %>
             </ul>
             <div class="feature-band">
               <div class="feature-pill"><strong><%= product.stock %></strong><span>Stock</span></div>
-              <div class="feature-pill"><strong><%= product.rating %></strong><span>Rating</span></div>
+              <div class="feature-pill"><strong><%= product.rating || 4.8 %></strong><span>Rating</span></div>
               <div class="feature-pill"><strong><%= product.discount %>%</strong><span>Offer</span></div>
             </div>
           </div>

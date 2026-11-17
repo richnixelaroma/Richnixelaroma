@@ -1,559 +1,395 @@
-* {
-  box-sizing: border-box;
-}
-
-:root {
-  --bg-1: #140f0d;
-  --bg-2: #1f1714;
-  --panel: rgba(35, 27, 23, 0.9);
-  --panel-2: rgba(20, 15, 13, 0.9);
-  --gold: #d2ab75;
-  --gold-strong: #c79352;
-  --leather: #9d6a42;
-  --text: #f7f1ea;
-  --muted: #d4c5b7;
-  --soft: rgba(255,255,255,0.06);
-  --line: rgba(210,171,117,0.18);
-}
-
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--text);
-  background:
-    radial-gradient(circle at top, rgba(157, 106, 66, 0.16), transparent 30%),
-    linear-gradient(180deg, var(--bg-1), var(--bg-2));
-  line-height: 1.6;
-}
-
-body::before {
-  content: 'saffron • rose • oud • amber • musk • sandalwood • cedar';
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: clamp(1.5rem, 3vw, 3.4rem);
-  letter-spacing: 0.3rem;
-  text-transform: lowercase;
-  color: rgba(210, 171, 117, 0.08);
-  pointer-events: none;
-  z-index: 0;
-  text-align: center;
-  padding: 2rem;
-}
-
-a { color: inherit; text-decoration: none; }
-img { max-width: 100%; display: block; }
-
-.container {
-  width: min(1200px, calc(100% - 32px));
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(16, 12, 10, 0.7);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-
-.navbar {
-  min-height: 82px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 0.12rem;
-  text-transform: uppercase;
-}
-
-.brand-mark {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--gold), var(--leather));
-  display: grid;
-  place-items: center;
-  color: #1d120d;
-  font-weight: 900;
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 1.2rem;
-  padding: 0;
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-.nav-links a:hover { color: var(--text); }
-
-.action-row {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.8rem 1.3rem;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--gold), var(--leather));
-  color: #1e120c;
-  border-color: transparent;
-  font-weight: 700;
-}
-
-.btn-secondary { background: rgba(255,255,255,0.02); }
-
-.hero {
-  padding: 4.5rem 0 3rem;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 2rem;
-  align-items: center;
-}
-
-.kicker {
-  display: inline-block;
-  padding: 0.5rem 0.8rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--gold);
-  background: rgba(210,171,117,0.07);
-  font-size: 0.74rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14rem;
-}
-
-.hero h1 {
-  margin: 1rem 0 0.8rem;
-  font-size: clamp(2.8rem, 6vw, 5rem);
-  line-height: 0.95;
-  letter-spacing: -0.06em;
-}
-
-.hero p {
-  max-width: 620px;
-  color: var(--muted);
-  font-size: 1.06rem;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 1.8rem;
-}
-
-.trust-row {
-  margin-top: 2rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 1.6rem;
-  color: var(--muted);
-  font-size: 0.82rem;
-  letter-spacing: 0.1rem;
-  text-transform: uppercase;
-}
-
-.hero-visual {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 500px;
-}
-
-.bottle-card {
-  position: relative;
-  width: min(340px, 84%);
-  aspect-ratio: 0.72;
-  border-radius: 36px 36px 42px 42px;
-  background: linear-gradient(145deg, rgba(210,171,117,0.16), rgba(56,36,30,0.96));
-  border: 1px solid var(--line);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.42);
-}
-
-.bottle-card::before {
-  content: '';
-  position: absolute;
-  inset: 18% 22% 16% 22%;
-  border-radius: 26px;
-  background: linear-gradient(180deg, rgba(255,244,224,0.18), rgba(31,24,20,0.1));
-  border: 1px solid rgba(210,171,117,0.2);
-}
-
-.bottle-card::after {
-  content: '';
-  position: absolute;
-  left: 30%;
-  top: 12%;
-  width: 40%;
-  height: 18%;
-  border-radius: 20px 20px 10px 10px;
-  background: linear-gradient(180deg, #f1d9af, #d9a868);
-  box-shadow: 0 20px 28px rgba(210,171,117,0.25);
-}
-
-.pill {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.7rem 1rem;
-  border-radius: 999px;
-  background: rgba(21, 15, 12, 0.8);
-  border: 1px solid var(--line);
-  font-size: 0.74rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12rem;
-  color: var(--gold);
-}
-
-.pill-top { top: 12%; right: 5%; }
-.pill-bottom { bottom: 14%; left: 4%; }
-
-.section { padding: 3rem 0; }
-
-.section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.section-head h2 {
-  margin: 0.8rem 0 0;
-  font-size: clamp(2rem, 3vw, 3rem);
-  letter-spacing: -0.05em;
-}
-
-.section-head p {
-  max-width: 560px;
-  color: var(--muted);
-  margin: 0;
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.2rem;
-}
-
-.product-card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  overflow: hidden;
-}
-
-.product-image {
-  height: 220px;
-  background: linear-gradient(145deg, rgba(210,171,117,0.14), rgba(90,61,46,0.42));
-  position: relative;
-}
-
-.product-image::before {
-  content: '';
-  position: absolute;
-  inset: 22% 28% 18% 28%;
-  border-radius: 20px;
-  border: 1px solid rgba(210,171,117,0.18);
-  background: linear-gradient(180deg, rgba(255,242,223,0.26), rgba(38,27,21,0.2));
-}
-
-.product-body {
-  padding: 1.15rem 1.15rem 1.35rem;
-}
-
-.product-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.8rem;
-  letter-spacing: 0.08rem;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.product-body h3 {
-  margin: 0.9rem 0 0.6rem;
-  font-size: 1.4rem;
-}
-
-.product-body p {
-  margin: 0;
-  color: var(--muted);
-  min-height: 54px;
-}
-
-.product-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.2rem;
-}
-
-.price-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.price {
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
-.old-price {
-  color: rgba(255,255,255,0.5);
-  text-decoration: line-through;
-  font-size: 0.85rem;
-}
-
-.add-btn {
-  border: 0;
-  border-radius: 999px;
-  padding: 0.75rem 1rem;
-  background: linear-gradient(135deg, var(--gold), var(--leather));
-  color: #1c130d;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.story-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.4rem;
-  align-items: center;
-}
-
-.story-box, .info-box, .mini-card, .summary-box, .form-area, .admin-panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  padding: 1.4rem;
-}
-
-.story-box h3, .info-box h3, .mini-card h3, .summary-box h3, .form-area h3, .admin-panel h3 { margin-top: 0; }
-
-.list {
-  list-style: none;
-  margin: 1rem 0 0;
-  padding: 0;
-  color: var(--muted);
-  display: grid;
-  gap: 0.6rem;
-}
-
-.feature-band {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.8rem;
-  margin-top: 1.2rem;
-}
-
-.feature-pill {
-  padding: 1rem;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-}
-
-.feature-pill strong {
-  display: block;
-  font-size: 1.4rem;
-  color: var(--gold);
-}
-
-.testimonials {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.quote {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 1.2rem;
-}
-
-.quote p { color: var(--muted); }
-
-.newsletter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  background: linear-gradient(135deg, rgba(210,171,117,0.08), rgba(45,34,30,0.85));
-  border: 1px solid var(--line);
-  border-radius: 28px;
-  padding: 1.6rem;
-}
-
-.newsletter-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-}
-
-.input, .select, .textarea {
-  width: 100%;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  color: var(--text);
-  padding: 0.9rem 1rem;
-  font: inherit;
-}
-
-.inline-input { min-width: 220px; }
-
-.page-hero {
-  padding: 3.2rem 0 1.8rem;
-}
-
-.page-hero h1 {
-  margin: 0.8rem 0 0;
-  font-size: clamp(2.3rem, 4vw, 4rem);
-  letter-spacing: -0.05em;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.checkout-layout {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 1.2rem;
-}
-
-.cart-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.8rem 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.cart-thumb {
-  width: 62px;
-  height: 62px;
-  border-radius: 14px;
-  background: linear-gradient(145deg, rgba(210,171,117,0.15), rgba(87,63,48,0.5));
-}
-
-.cart-totals {
-  margin-top: 1rem;
-  display: grid;
-  gap: 0.7rem;
-}
-
-.total-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.admin-shell { padding: 2rem 0 4rem; }
-
-.admin-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.2rem;
-}
-
-.order-list {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0;
-}
-
-.order-list li {
-  padding: 0.9rem 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.order-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 0.4rem;
-}
-
-.status-pill {
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.35rem 0.7rem;
-  border-radius: 999px;
-  background: rgba(210,171,117,0.09);
-  color: var(--gold);
-  font-size: 0.72rem;
-  letter-spacing: 0.12rem;
-  text-transform: uppercase;
-}
-
-.site-footer {
-  border-top: 1px solid var(--line);
-  padding: 1.8rem 0 2.4rem;
-  color: var(--muted);
-}
-
-.footer-grid {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 900px) {
-  .hero-grid, .story-grid, .products-grid, .testimonials, .checkout-layout, .support-grid, .admin-grid { grid-template-columns: 1fr; }
-  .navbar { flex-wrap: wrap; padding: 0.8rem 0; }
-  .nav-links { width: 100%; justify-content: center; flex-wrap: wrap; }
-}
-
-@media (max-width: 640px) {
-  .newsletter, .section-head, .hero-actions { display: grid; }
-  .newsletter { padding: 1.2rem; }
-  .hero { padding-top: 3rem; }
-}
+const express = require('express');
+const session = require('express-session');
+const fs = require('fs');
+const path = require('path');
+require('dotenv').config();
+
+const app = express();
+const PORT = Number(process.env.PORT) || 3000;
+const DATA_DIR = path.join(__dirname, 'data');
+const PRODUCTS_PATH = path.join(DATA_DIR, 'products.json');
+const COUPONS_PATH = path.join(DATA_DIR, 'coupons.json');
+const ORDERS_PATH = path.join(DATA_DIR, 'orders.json');
+const CONFIG_PATH = path.join(DATA_DIR, 'site-config.json');
+
+const DEFAULT_ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'Lucifer';
+const DEFAULT_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'lucifer7@!';
+
+const DEFAULT_PRODUCTS = [
+  { id: 'prod-1', name: 'Velvet Oud Elixir', slug: 'velvet-oud-elixir', category: 'Perfume', price: 2199, discount: 18, stock: 24, rating: 4.9, image: '/images/perfume-1.jpg', featured: true, description: 'Warm oud, saffron, and amber for an unforgettable evening impression.', notes: ['Saffron', 'Oud', 'Amber', 'Vanilla'] },
+  { id: 'prod-2', name: 'Royal Rose Attar', slug: 'royal-rose-attar', category: 'Attar', price: 1599, discount: 12, stock: 32, rating: 4.8, image: '/images/attar-1.jpg', featured: true, description: 'Rose petals, musk, and soft woods in a fluid attar finish.', notes: ['Rose', 'Musk', 'Pear', 'White Woods'] },
+  { id: 'prod-3', name: 'Saffron Noir Pour', slug: 'saffron-noir-pour', category: 'Perfume', price: 2899, discount: 20, stock: 18, rating: 5.0, image: '/images/perfume-2.jpg', featured: true, description: 'A bold evening scent with spice, leather, and deep amber polish.', notes: ['Saffron', 'Leather', 'Patchouli', 'Black Pepper'] },
+  { id: 'prod-4', name: 'Musk Charisma', slug: 'musk-charisma', category: 'Perfume', price: 1899, discount: 15, stock: 41, rating: 4.7, image: '/images/perfume-3.jpg', featured: false, description: 'Clean musk and sandalwood for confident everyday elegance.', notes: ['Musk', 'Sandalwood', 'Bergamot', 'Tea'] },
+  { id: 'prod-5', name: 'Faham Gold Attar', slug: 'faham-gold-attar', category: 'Attar', price: 1699, discount: 10, stock: 26, rating: 4.8, image: '/images/attar-2.jpg', featured: false, description: 'Earthy, rich, and polished with a soft spice trail.', notes: ['Faham', 'Cedar', 'Cardamom', 'Civet'] },
+  { id: 'prod-6', name: 'Cedar Bloom', slug: 'cedar-bloom', category: 'Perfume', price: 2499, discount: 17, stock: 14, rating: 4.9, image: '/images/perfume-4.jpg', featured: true, description: 'Cedarwood and blooming florals wrapped in amber warmth.', notes: ['Cedarwood', 'Peony', 'Amber', 'Jasmine'] }
+];
+
+const DEFAULT_COUPONS = [
+  { code: 'RICH10', type: 'percent', value: 10, active: true },
+  { code: 'ATTAR20', type: 'percent', value: 20, active: true },
+  { code: 'WELCOME15', type: 'percent', value: 15, active: true }
+];
+
+function ensureDataFiles() {
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  if (!fs.existsSync(PRODUCTS_PATH)) fs.writeFileSync(PRODUCTS_PATH, JSON.stringify(DEFAULT_PRODUCTS, null, 2));
+  if (!fs.existsSync(COUPONS_PATH)) fs.writeFileSync(COUPONS_PATH, JSON.stringify(DEFAULT_COUPONS, null, 2));
+  if (!fs.existsSync(ORDERS_PATH)) fs.writeFileSync(ORDERS_PATH, JSON.stringify([], null, 2));
+  if (!fs.existsSync(CONFIG_PATH)) {
+    fs.writeFileSync(CONFIG_PATH, JSON.stringify({
+      siteName: 'Richnixelaroma',
+      supportPhone: '+91 9099401987',
+      upiId: process.env.UPI_ID || 'Creationlofi777@oksbi',
+      codEnabled: true,
+      gujaratOnly: true,
+      tagline: 'Curated luxury perfumes and attars for discerning, refined lifestyles.',
+      announcement: 'Luxury fragrance house • Gujarat delivery only'
+    }, null, 2));
+  }
+}
+
+function readJson(filePath, fallback) {
+  try {
+    const raw = fs.readFileSync(filePath, 'utf8');
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function writeJson(filePath, data) {
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
+
+function getProducts() {
+  return readJson(PRODUCTS_PATH, DEFAULT_PRODUCTS);
+}
+
+function getCoupons() {
+  return readJson(COUPONS_PATH, DEFAULT_COUPONS);
+}
+
+function getOrders() {
+  return readJson(ORDERS_PATH, []);
+}
+
+function getConfig() {
+  const config = readJson(CONFIG_PATH, {});
+  return {
+    siteName: 'Richnixelaroma',
+    supportPhone: '+91 9099401987',
+    upiId: process.env.UPI_ID || 'Creationlofi777@oksbi',
+    codEnabled: true,
+    gujaratOnly: true,
+    tagline: 'Curated luxury perfumes and attars for discerning, refined lifestyles.',
+    announcement: 'Luxury fragrance house • Gujarat delivery only',
+    ...config
+  };
+}
+
+function getCartCount(req) {
+  const cart = req.session.cart || [];
+  return cart.reduce((count, item) => count + Number(item.quantity || 0), 0);
+}
+
+function buildUpiLink(amount, orderId) {
+  const upi = encodeURIComponent(getConfig().upiId || 'Creationlofi777@oksbi');
+  const name = encodeURIComponent('Richnix Perfumes');
+  const note = encodeURIComponent(`Order ${orderId}`);
+  return `upi://pay?pa=${upi}&pn=${name}&am=${Number(amount || 0).toFixed(2)}&cu=INR&tn=${note}`;
+}
+
+function generateOrderId() {
+  return `RNX-${Date.now().toString().slice(-8)}`;
+}
+
+function requireAdmin(req, res, next) {
+  if (req.session && req.session.adminLoggedIn) return next();
+  return res.redirect('/admin/login');
+}
+
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'richnixelaroma-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { httpOnly: true, sameSite: 'lax', maxAge: 8 * 60 * 60 * 1000 }
+}));
+
+app.use((req, res, next) => {
+  if (!req.session.cart) req.session.cart = [];
+  res.locals.config = getConfig();
+  res.locals.cartCount = getCartCount(req);
+  res.locals.adminLoggedIn = Boolean(req.session.adminLoggedIn);
+  next();
+});
+
+app.get('/', (req, res) => {
+  const featured = getProducts().filter((p) => p.featured);
+  res.render('index', { products: featured });
+});
+
+app.get('/products', (req, res) => {
+  const products = getProducts();
+  res.render('products', { products });
+});
+
+app.get('/products/:slug', (req, res) => {
+  const product = getProducts().find((item) => item.slug === req.params.slug);
+  if (!product) return res.status(404).render('404', { adminLoggedIn: Boolean(req.session.adminLoggedIn) });
+  res.render('product', { product });
+});
+
+app.get('/cart', (req, res) => {
+  res.render('cart');
+});
+
+app.get('/checkout', (req, res) => {
+  res.render('checkout');
+});
+
+app.get('/support', (req, res) => {
+  res.render('support');
+});
+
+app.get('/order-success', (req, res) => {
+  const order = getOrders().find((item) => item.id === req.query.orderId) || null;
+  res.render('order-success', { order });
+});
+
+app.post('/api/order', (req, res) => {
+  const payload = req.body || {};
+  const cart = Array.isArray(payload.cart) ? payload.cart : [];
+  if (!cart.length) {
+    return res.status(400).json({ success: false, message: 'Your cart is empty.' });
+  }
+
+  const state = String(payload.state || '').trim();
+  if (getConfig().gujaratOnly && state.toLowerCase() !== 'gujarat') {
+    return res.status(400).json({ success: false, message: 'We currently deliver only within Gujarat.' });
+  }
+
+  const products = getProducts();
+  const productMap = new Map(products.map((product) => [product.id, product]));
+
+  const items = cart.map((entry) => {
+    const product = productMap.get(entry.id);
+    const quantity = Number(entry.quantity || 1);
+    if (!product || quantity <= 0) return null;
+    return {
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      image: product.image,
+      quantity,
+      price: Number(product.price || 0),
+      discount: Number(product.discount || 0)
+    };
+  }).filter(Boolean);
+
+  if (!items.length) {
+    return res.status(400).json({ success: false, message: 'One or more items are unavailable.' });
+  }
+
+  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const couponCode = String(payload.coupon || '').trim().toUpperCase();
+  const coupon = getCoupons().find((entry) => entry.code === couponCode && entry.active);
+  const discountAmount = coupon
+    ? (coupon.type === 'fixed' ? Number(coupon.value || 0) : subtotal * (Number(coupon.value || 0) / 100))
+    : 0;
+  const total = Math.max(0, subtotal - discountAmount);
+
+  const customer = {
+    name: String(payload.name || '').trim(),
+    phone: String(payload.phone || '').trim(),
+    email: String(payload.email || '').trim(),
+    address: String(payload.address || '').trim(),
+    city: String(payload.city || '').trim(),
+    state: String(payload.state || '').trim(),
+    pincode: String(payload.pincode || '').trim(),
+    paymentMethod: String(payload.paymentMethod || 'upi').toLowerCase()
+  };
+
+  if (!customer.name || !customer.phone || !customer.address || !customer.city || !customer.pincode) {
+    return res.status(400).json({ success: false, message: 'Please complete all required delivery details.' });
+  }
+
+  const orderId = generateOrderId();
+  const order = {
+    id: orderId,
+    customer,
+    items,
+    subtotal: Number(subtotal.toFixed(2)),
+    discount: Number(discountAmount.toFixed(2)),
+    total: Number(total.toFixed(2)),
+    paymentMethod: customer.paymentMethod,
+    status: customer.paymentMethod === 'upi' ? 'Awaiting UPI confirmation' : 'Order placed - COD',
+    createdAt: new Date().toISOString(),
+    paymentLink: customer.paymentMethod === 'upi' ? buildUpiLink(total, orderId) : ''
+  };
+
+  const orders = getOrders();
+  orders.unshift(order);
+  writeJson(ORDERS_PATH, orders);
+  req.session.cart = [];
+
+  res.json({
+    success: true,
+    order,
+    message: customer.paymentMethod === 'upi'
+      ? 'Order created. Please complete your UPI payment.'
+      : 'Order created successfully. Cash on delivery is available for Gujarat addresses.'
+  });
+});
+
+app.get('/admin/login', (req, res) => {
+  res.render('admin-login', { error: null });
+});
+
+app.post('/admin/login', (req, res) => {
+  const username = String(req.body.username || '').trim();
+  const password = String(req.body.password || '').trim();
+  if (username === DEFAULT_ADMIN_USERNAME && password === DEFAULT_ADMIN_PASSWORD) {
+    req.session.adminLoggedIn = true;
+    req.session.adminUser = username;
+    return res.redirect('/admin');
+  }
+  return res.render('admin-login', { error: 'Invalid admin username or password.' });
+});
+
+app.get('/admin/logout', (req, res) => {
+  req.session.destroy(() => res.redirect('/admin/login'));
+});
+
+app.get('/admin', requireAdmin, (req, res) => {
+  const products = getProducts();
+  const coupons = getCoupons();
+  const orders = getOrders().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  res.render('admin', {
+    products,
+    coupons,
+    orders,
+    adminUser: req.session.adminUser || DEFAULT_ADMIN_USERNAME,
+    config: getConfig()
+  });
+});
+
+app.post('/admin/site-config', requireAdmin, (req, res) => {
+  const current = getConfig();
+  const nextConfig = {
+    ...current,
+    siteName: String(req.body.siteName || current.siteName).trim() || current.siteName,
+    supportPhone: String(req.body.supportPhone || current.supportPhone).trim() || current.supportPhone,
+    upiId: String(req.body.upiId || current.upiId).trim() || current.upiId,
+    codEnabled: req.body.codEnabled === 'on',
+    gujaratOnly: req.body.gujaratOnly === 'on',
+    tagline: String(req.body.tagline || current.tagline).trim() || current.tagline,
+    announcement: String(req.body.announcement || current.announcement).trim() || current.announcement
+  };
+  writeJson(CONFIG_PATH, nextConfig);
+  res.redirect('/admin');
+});
+
+app.post('/admin/products', requireAdmin, (req, res) => {
+  const products = getProducts();
+  const name = String(req.body.name || '').trim();
+  const price = Number(req.body.price || 0);
+  if (!name || !price) return res.redirect('/admin');
+  const slugBase = String(req.body.slug || name).trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  products.push({
+    id: `prod-${Date.now()}`,
+    name,
+    slug: slugBase || `product-${Date.now()}`,
+    category: String(req.body.category || 'Perfume').trim(),
+    price,
+    discount: Number(req.body.discount || 0),
+    stock: Number(req.body.stock || 0),
+    image: String(req.body.image || '/images/default.jpg').trim(),
+    description: String(req.body.description || '').trim(),
+    notes: String(req.body.notes || '').split(',').map((item) => item.trim()).filter(Boolean),
+    featured: req.body.featured === 'on',
+    rating: Number(req.body.rating || 4.8)
+  });
+  writeJson(PRODUCTS_PATH, products);
+  res.redirect('/admin');
+});
+
+app.post('/admin/products/:id', requireAdmin, (req, res) => {
+  const products = getProducts();
+  const index = products.findIndex((item) => item.id === req.params.id);
+  if (index === -1) return res.redirect('/admin');
+
+  products[index] = {
+    ...products[index],
+    name: String(req.body.name || products[index].name).trim(),
+    category: String(req.body.category || products[index].category).trim(),
+    price: Number(req.body.price || products[index].price),
+    discount: Number(req.body.discount || products[index].discount || 0),
+    stock: Number(req.body.stock || products[index].stock || 0),
+    image: String(req.body.image || products[index].image || '/images/default.jpg').trim(),
+    description: String(req.body.description || products[index].description || '').trim(),
+    notes: String(req.body.notes || (products[index].notes || []).join(', ')).split(',').map((item) => item.trim()).filter(Boolean),
+    featured: req.body.featured === 'on',
+    rating: Number(req.body.rating || products[index].rating || 4.8)
+  };
+  writeJson(PRODUCTS_PATH, products);
+  res.redirect('/admin');
+});
+
+app.post('/admin/products/:id/delete', requireAdmin, (req, res) => {
+  const products = getProducts().filter((item) => item.id !== req.params.id);
+  writeJson(PRODUCTS_PATH, products);
+  res.redirect('/admin');
+});
+
+app.post('/admin/coupons', requireAdmin, (req, res) => {
+  const coupons = getCoupons();
+  const code = String(req.body.code || '').trim().toUpperCase();
+  const value = Number(req.body.value || 0);
+  if (!code || !value) return res.redirect('/admin');
+  coupons.push({ code, type: req.body.type || 'percent', value, active: true });
+  writeJson(COUPONS_PATH, coupons);
+  res.redirect('/admin');
+});
+
+app.post('/admin/coupons/:code/toggle', requireAdmin, (req, res) => {
+  const coupons = getCoupons();
+  const index = coupons.findIndex((item) => item.code === req.params.code);
+  if (index !== -1) {
+    coupons[index].active = !coupons[index].active;
+    writeJson(COUPONS_PATH, coupons);
+  }
+  res.redirect('/admin');
+});
+
+app.post('/admin/coupons/:code/delete', requireAdmin, (req, res) => {
+  const coupons = getCoupons().filter((item) => item.code !== req.params.code);
+  writeJson(COUPONS_PATH, coupons);
+  res.redirect('/admin');
+});
+
+app.post('/admin/orders/:id/status', requireAdmin, (req, res) => {
+  const orders = getOrders();
+  const index = orders.findIndex((order) => order.id === req.params.id);
+  if (index !== -1) {
+    orders[index].status = String(req.body.status || orders[index].status).trim();
+    writeJson(ORDERS_PATH, orders);
+  }
+  res.redirect('/admin');
+});
+
+app.use((req, res) => {
+  res.status(404).render('404', { adminLoggedIn: Boolean(req.session.adminLoggedIn) });
+});
+
+ensureDataFiles();
+app.listen(PORT, () => {
+  console.log(`Richnixelaroma running on http://localhost:${PORT}`);
+});
+
+module.exports = app;

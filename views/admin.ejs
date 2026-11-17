@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin login | <%= config.siteName %></title>
+    <title>Owner panel | <%= config.siteName %></title>
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
@@ -15,7 +15,7 @@
           <div class="form-area">
             <h3>Owner panel login</h3>
             <% if (error) { %>
-              <p style="color: #f9dede; margin-bottom: 1rem;"><%= error %></p>
+              <p style="color: var(--error); margin-bottom: 1rem;"><%= error %></p>
             <% } %>
             <form method="POST" action="/admin/login">
               <div class="form-grid">

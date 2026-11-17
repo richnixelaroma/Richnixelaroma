@@ -1,17 +1,25 @@
-<footer class="site-footer">
-  <div class="container footer-grid">
-    <div>
-      <strong><%= config.siteName %></strong>
-      <p>Luxury fragrance house with premium perfumes and attars.</p>
-    </div>
-    <div>
-      <p>Support</p>
-      <p><%= config.supportPhone %></p>
-    </div>
-    <div>
-      <p>Payments</p>
-      <p>UPI: <%= config.upiId %></p>
-      <p>COD: Gujarat only</p>
-    </div>
-  </div>
-</footer>
+# Richnixelaroma
+
+Premium luxury perfume and attar storefront with a polished storefront, cart and checkout flow, and private owner dashboard.
+
+## Setup
+
+1. npm install
+2. copy .env.example to .env
+3. npm start
+4. open http://localhost:3000
+
+## Admin login
+
+- Username: Lucifer
+- Password: lucifer7@!
+
+## Features
+
+- luxury landing page
+- product catalog and detail pages
+- cart and checkout flow
+- order management dashboard
+- coupon management
+- Gujarat-only order validation
+- UPI and COD checkout options

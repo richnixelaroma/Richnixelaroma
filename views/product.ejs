@@ -22,17 +22,17 @@
           <div class="products-grid">
             <% products.forEach((product) => { %>
               <article class="product-card">
-                <div class="product-image"></div>
+                <div class="product-image" aria-label="<%= product.name %>"></div>
                 <div class="product-body">
                   <div class="product-meta">
                     <span><%= product.category %></span>
-                    <span><%= product.rating %> ★</span>
+                    <span><%= product.rating || 4.8 %> ★</span>
                   </div>
                   <h3><a href="/products/<%= product.slug %>"><%= product.name %></a></h3>
                   <p><%= product.description %></p>
                   <div class="product-footer">
                     <div class="price-row">
-                      <span class="price">₹<%= product.price.toLocaleString('en-IN') %></span>
+                      <span class="price">₹<%= Number(product.price).toLocaleString('en-IN') %></span>
                       <% if (product.discount) { %>
                         <span class="old-price">₹<%= ((product.price / (1 - product.discount / 100))).toFixed(0).toLocaleString('en-IN') %></span>
                       <% } %>

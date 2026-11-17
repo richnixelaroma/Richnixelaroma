@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Owner panel | <%= config.siteName %></title>
+    <title>Owner dashboard | <%= config.siteName %></title>
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
@@ -29,12 +29,20 @@
                   <input class="input" type="text" name="siteName" value="<%= config.siteName %>" />
                 </label>
                 <label>
-                  <span>Support phone</span>
+                  <span>Support number</span>
                   <input class="input" type="text" name="supportPhone" value="<%= config.supportPhone %>" />
                 </label>
                 <label style="grid-column: 1 / -1;">
                   <span>UPI ID</span>
                   <input class="input" type="text" name="upiId" value="<%= config.upiId %>" />
+                </label>
+                <label style="grid-column: 1 / -1;">
+                  <span>Tagline</span>
+                  <input class="input" type="text" name="tagline" value="<%= config.tagline %>" />
+                </label>
+                <label style="grid-column: 1 / -1;">
+                  <span>Announcement</span>
+                  <input class="input" type="text" name="announcement" value="<%= config.announcement %>" />
                 </label>
                 <label>
                   <span>COD enabled</span>
@@ -83,7 +91,7 @@
                   <input class="input" type="number" name="stock" value="10" />
                 </label>
                 <label style="grid-column: 1 / -1;">
-                  <span>Image</span>
+                  <span>Image URL</span>
                   <input class="input" type="text" name="image" value="/images/default.jpg" />
                 </label>
                 <label style="grid-column: 1 / -1;">
@@ -91,12 +99,16 @@
                   <textarea class="textarea" name="description" rows="3"></textarea>
                 </label>
                 <label style="grid-column: 1 / -1;">
-                  <span>Notes (comma-separated)</span>
+                  <span>Notes (comma separated)</span>
                   <input class="input" type="text" name="notes" value="Saffron, Oud, Vanilla" />
                 </label>
                 <label>
                   <span>Featured</span>
                   <input type="checkbox" name="featured" />
+                </label>
+                <label>
+                  <span>Rating</span>
+                  <input class="input" type="number" step="0.1" name="rating" value="4.8" />
                 </label>
               </div>
               <div style="margin-top: 1rem;">
@@ -131,12 +143,31 @@
                 <button class="btn btn-primary" type="submit">Add coupon</button>
               </div>
             </form>
+
+            <div style="margin-top: 1rem;">
+              <% coupons.forEach((coupon) => { %>
+                <div style="display:flex; justify-content:space-between; gap:0.8rem; align-items:center; padding:0.7rem 0; border-top:1px solid var(--line);">
+                  <div>
+                    <strong><%= coupon.code %></strong>
+                    <div style="color: var(--muted);"><%= coupon.type %> • <%= coupon.value %></div>
+                  </div>
+                  <div style="display:flex; gap:0.5rem;">
+                    <form method="POST" action="/admin/coupons/<%= coupon.code %>/toggle">
+                      <button class="btn btn-ghost" type="submit"><%= coupon.active ? 'Disable' : 'Enable' %></button>
+                    </form>
+                    <form method="POST" action="/admin/coupons/<%= coupon.code %>/delete">
+                      <button class="btn btn-secondary" type="submit">Delete</button>
+                    </form>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
           </section>
 
           <section class="admin-panel">
-            <h3>Products</h3>
+            <h3>Manage products</h3>
             <% products.forEach((product) => { %>
-              <form method="POST" action="/admin/products/<%= product.id %>" style="margin-bottom: 1rem; border-top: 1px solid var(--line); padding-top: 1rem;">
+              <form method="POST" action="/admin/products/<%= product.id %>" style="margin-bottom:1rem; border-top:1px solid var(--line); padding-top:1rem;">
                 <div class="form-grid">
                   <label>
                     <span>Name</span>
@@ -147,25 +178,32 @@
                     <input class="input" type="number" name="price" value="<%= product.price %>" />
                   </label>
                   <label>
-                    <span>Discount</span>
-                    <input class="input" type="number" name="discount" value="<%= product.discount %>" />
+                    <span>Discount %</span>
+                    <input class="input" type="number" name="discount" value="<%= product.discount || 0 %>" />
                   </label>
                   <label>
                     <span>Stock</span>
-                    <input class="input" type="number" name="stock" value="<%= product.stock %>" />
+                    <input class="input" type="number" name="stock" value="<%= product.stock || 0 %>" />
                   </label>
                   <label style="grid-column: 1 / -1;">
                     <span>Notes</span>
-                    <input class="input" type="text" name="notes" value="<%= product.notes.join(', ') %>" />
+                    <input class="input" type="text" name="notes" value="<%= (product.notes || []).join(', ') %>" />
                   </label>
                   <label>
                     <span>Featured</span>
                     <input type="checkbox" name="featured" <%= product.featured ? 'checked' : '' %> />
                   </label>
+                  <label>
+                    <span>Rating</span>
+                    <input class="input" type="number" name="rating" step="0.1" value="<%= product.rating || 4.8 %>" />
+                  </label>
                 </div>
-                <div style="margin-top: 0.7rem;">
-                  <button class="btn btn-secondary" type="submit">Update product</button>
+                <div style="display:flex; gap:0.75rem; margin-top:0.8rem;">
+                  <button class="btn btn-secondary" type="submit">Update</button>
                 </div>
+              </form>
+              <form method="POST" action="/admin/products/<%= product.id %>/delete" style="margin-bottom:1rem;">
+                <button class="btn btn-ghost" type="submit">Delete product</button>
               </form>
             <% }) %>
           </section>
@@ -181,10 +219,10 @@
                   <span><%= order.customer.name %></span>
                 </div>
                 <div style="color: var(--muted);">
-                  <div>₹<%= Number(order.total).toLocaleString('en-IN') %> • <%= order.paymentMethod.toUpperCase() %></div>
+                  <div>₹<%= Number(order.total).toLocaleString('en-IN') %> • <%= String(order.paymentMethod || 'upi').toUpperCase() %></div>
                   <div><%= order.customer.city %>, <%= order.customer.state %></div>
                 </div>
-                <form method="POST" action="/admin/orders/<%= order.id %>/status" style="margin-top: 0.7rem;">
+                <form method="POST" action="/admin/orders/<%= order.id %>/status">
                   <select class="select" name="status">
                     <option <%= order.status === 'Awaiting UPI confirmation' ? 'selected' : '' %>>Awaiting UPI confirmation</option>
                     <option <%= order.status === 'Order placed - COD' ? 'selected' : '' %>>Order placed - COD</option>
@@ -192,7 +230,7 @@
                     <option <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
                     <option <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
                   </select>
-                  <button class="btn btn-secondary" style="margin-top: 0.6rem;" type="submit">Update</button>
+                  <button class="btn btn-secondary" type="submit" style="margin-top:0.6rem;">Update</button>
                 </form>
               </li>
             <% }) %>

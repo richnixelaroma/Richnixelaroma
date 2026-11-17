@@ -51,7 +51,7 @@
                 <input class="input" type="text" name="pincode" required />
               </label>
               <label>
-                <span>Coupon</span>
+                <span>Coupon code</span>
                 <input class="input" type="text" id="couponCode" name="coupon" placeholder="RICH10" />
               </label>
             </div>
@@ -60,17 +60,13 @@
               <h3>Payment method</h3>
               <div class="form-grid">
                 <label><input type="radio" name="paymentMethod" value="upi" checked /> Pay via UPI</label>
-                <label><input type="radio" name="paymentMethod" value="cod" /> Cash on Delivery</label>
+                <label><input type="radio" name="paymentMethod" value="cod" /> Cash on delivery</label>
               </div>
             </div>
 
-            <input type="hidden" name="coupon" id="couponHidden" />
-            <input type="hidden" name="checkoutTotal" id="checkoutTotal" />
-            <input type="hidden" name="discountValue" id="discountValue" />
-
-            <div style="margin-top: 1.2rem;">
-              <button class="btn btn-primary" type="submit">Place order</button>
-            </div>
+            <input type="hidden" id="couponHidden" name="coupon" />
+            <input type="hidden" id="checkoutTotal" />
+            <button class="btn btn-primary" style="margin-top: 1rem;" type="submit">Place order</button>
           </form>
 
           <aside class="summary-box">

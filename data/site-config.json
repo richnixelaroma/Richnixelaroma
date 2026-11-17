@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page not found | <%= config.siteName %></title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <%- include('partials/header') %>
+
+    <main>
+      <section class="section">
+        <div class="container" style="max-width:760px;">
+          <div class="story-box">
+            <span class="kicker">404</span>
+            <h3>Page not found</h3>
+            <p>The page you requested could not be found.</p>
+            <a href="/" class="btn btn-primary">Return home</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>
