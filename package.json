@@ -1,11 +1,12 @@
 {
   "name": "richnixelaroma",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Luxury perfume and attar storefront with admin dashboard",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "test": "node --test"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
