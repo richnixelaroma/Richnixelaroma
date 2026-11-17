@@ -1,5 +1,14 @@
-const { FILES, readJson, writeJson } = require('./jsonStore');
+const jsonAdapter = require('./adapters/jsonAdapter');
 const { config: env } = require('../config');
+
+// Adapter contract: initialize(defaults), get(collection, fallback), set(collection, value).
+// A SQLite/PostgreSQL adapter can implement this contract without changing routes/services.
+const adapterName = (process.env.DATA_ADAPTER || 'json').toLowerCase();
+const adapters = { json: jsonAdapter };
+if (!adapters[adapterName]) {
+  throw new Error(`Unsupported DATA_ADAPTER "${adapterName}". Available adapters: ${Object.keys(adapters).join(', ')}.`);
+}
+const adapter = adapters[adapterName];
 
 const DEFAULT_CONFIG = {
   siteName: 'Richnixelaroma',
@@ -9,35 +18,28 @@ const DEFAULT_CONFIG = {
   gujaratOnly: true,
   tagline: 'Premium perfumes and attars curated with luxury, heritage, and elegance.'
 };
+const DEFAULTS = { products: [], coupons: [], orders: [], config: DEFAULT_CONFIG };
 
 function initializeData() {
-  const initial = {
-    products: [],
-    coupons: [],
-    orders: [],
-    config: DEFAULT_CONFIG
-  };
-  for (const [key, filePath] of Object.entries(FILES)) {
-    if (!require('fs').existsSync(filePath)) writeJson(filePath, initial[key]);
-  }
+  adapter.initialize(DEFAULTS);
 }
 
 function readList(key) {
-  const value = readJson(FILES[key], []);
-  if (!Array.isArray(value)) throw new Error(`${key}.json must contain a JSON array.`);
+  const value = adapter.get(key, []);
+  if (!Array.isArray(value)) throw new Error(`${key} data must be an array.`);
   return value;
 }
 
 const getProducts = () => readList('products');
-const saveProducts = (value) => writeJson(FILES.products, value);
+const saveProducts = (value) => adapter.set('products', value);
 const getCoupons = () => readList('coupons');
-const saveCoupons = (value) => writeJson(FILES.coupons, value);
+const saveCoupons = (value) => adapter.set('coupons', value);
 const getOrders = () => readList('orders');
-const saveOrders = (value) => writeJson(FILES.orders, value);
+const saveOrders = (value) => adapter.set('orders', value);
 function getConfig() {
-  const value = readJson(FILES.config, {});
-  return { ...DEFAULT_CONFIG, ...value, upiId: value.upiId || env.upiId };
+  const value = adapter.get('config', {});
+  return { ...DEFAULT_CONFIG, ...(value || {}), upiId: (value && value.upiId) || env.upiId };
 }
-const saveConfig = (value) => writeJson(FILES.config, value);
+const saveConfig = (value) => adapter.set('config', value);
 
-module.exports = { initializeData, getProducts, saveProducts, getCoupons, saveCoupons, getOrders, saveOrders, getConfig, saveConfig };
+module.exports = { initializeData, getProducts, saveProducts, getCoupons, saveCoupons, getOrders, saveOrders, getConfig, saveConfig, adapterName };
